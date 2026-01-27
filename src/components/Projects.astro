@@ -1,0 +1,81 @@
+---
+import ProjectCard from './ProjectCard.astro';
+
+const PROJECTS = [
+  {
+    title: "Luz & Arcanos",
+    description: "Plataforma web interactiva para servicios de Tarot. Incluye sistema de reservas y blog. Desarrollada con enfoque en UX y performance.",
+    tags: ["React", "Firebase", "Tailwind CSS", "Git"],
+    link: "https://github.com/AleFaw/AlejoTarrio-React-88090" // Tu repo real
+  },
+  {
+    title: "Sistema de Gestión Académica",
+    description: "Aplicación Full Stack para administración de escuelas. Gestión de alumnos, asistencias y reportes automatizados. Migración de PHP puro a arquitectura MVC.",
+    tags: ["PHP", "MySQL", "JavaScript", "MVC"],
+    link: "#"
+  },
+  {
+    title: "Automatización Industrial (TP)",
+    description: "Diseño y presupuesto de sistema neumático para manufactura. Aplicación de lógica de ingeniería en resolución de problemas reales.",
+    tags: ["Ingeniería", "Automatización", "Gestión"],
+    link: "#"
+  }
+];
+---
+
+<section id="proyectos" class="py-20 px-4">
+  <div class="max-w-6xl mx-auto">
+    
+    <h2 class="text-4xl font-bold text-white mb-12 text-center">
+      Mis <span class="text-blue-500">Proyectos</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {PROJECTS.map((project) => (
+        /* 1. Envolvemos la tarjeta en un div con la clase 'project-card'.
+           2. Le ponemos 'opacity-0' para que empiece invisible (si no, parpadea).
+        */
+        <div class="project-card opacity-0"> 
+            <ProjectCard 
+              title={project.title}
+              description={project.description}
+              tags={project.tags}
+              link={project.link}
+            />
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  // 1. Registramos el plugin para que GSAP sepa que existe
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 2. Seleccionamos todas las tarjetas
+  const cards = document.querySelectorAll(".project-card");
+
+  // 3. Creamos la animación
+  gsap.fromTo(cards, 
+    { 
+      y: 100, // Empiezan 100px más abajo
+      opacity: 0 // Invisibles
+    },
+    {
+      y: 0, // Terminan en su lugar original
+      opacity: 1, // Visibles
+      duration: 1,
+      ease: "power3.out",
+      stagger: 0.8, // <--- IMPORTANTE: Espera 0.2s entre cada tarjeta
+      scrollTrigger: {
+        trigger: "#proyectos", // La animación se dispara al ver esta sección
+        start: "top 80%", // Inicia cuando el tope de la sección llega al 80% de la pantalla
+        // markers: true, // (Descomenta esto si quieres ver líneas guías para depurar)
+      }
+    }
+  );
+</script>

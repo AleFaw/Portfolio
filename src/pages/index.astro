@@ -1,17 +1,21 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import Hero3D from '../components/Hero3D.jsx'; // Componente React que haremos en el paso 3
+import About from '../components/About.astro';
+import Education from '../components/Education.astro'; // Componente que haremos en el paso 2
+import Projects from '../components/Projects.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Alejo Tarrio | Ingeniero & Desarrollador">
+    
+    <main class="h-screen w-full bg-slate-900 relative overflow-hidden">
+        <Hero3D client:load /> 
+    </main>
+
+    <About />
+
+    <Education />
+
+    <Projects />
+
+</Layout>

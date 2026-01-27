@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+  
+  /* Forzamos a que las secciones ocupen toda la pantalla */
+  section, main {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh; /* OBLIGATORIO: Mínimo toda la altura */
+    display: flex;     /* Ayuda a centrar el contenido verticalmente */
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente */
+  }
