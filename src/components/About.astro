@@ -1,7 +1,36 @@
 ---
-// src/components/About.astro
-const skills = [
-  "PHP", "MySQL", "Laravel", "React", "Astro", "Tailwind", "Git", "Python", "Blender"
+const skillCategories = [
+  {
+    title: "Lenguajes",
+    // Agregué HTML/CSS aquí como base sólida
+    skills: ["PHP", "JavaScript", "Python", "C#", "Java", "C", "HTML/CSS"]
+  },
+  {
+    title: "Frameworks & Web",
+    // Agregué Bootstrap que tenías con 3 años de exp.
+    skills: ["Laravel", "React", "Astro", "Angular", "ASP.NET", "Tailwind", "Bootstrap"]
+  },
+  {
+    title: "Data & BI",
+    skills: ["MySQL", "SQL Server", "PowerBI"]
+  },
+  {
+    title: "Ingeniería & Herramientas",
+    // Git, Blender, SolidWorks, AutoCAD y Visual Basic
+    skills: ["Git / GitHub", "Blender", "SolidWorks", "AutoCAD", "Visual Basic"]
+  }
+];
+
+// Array de imágenes (Marcadores de posición)
+// TIP: Reemplaza estos nombres por tus fotos reales en la carpeta /public
+const images = [
+  "/fotos/foto1.png", 
+  "/fotos/foto2.png", 
+  "/fotos/foto3.png", 
+  "/fotos/foto4.png", 
+  "/fotos/foto5.png", 
+  "/fotos/foto6.png",
+  "/fotos/foto7.png"
 ];
 ---
 
@@ -18,36 +47,56 @@ const skills = [
       </p>
 
       <p class="text-gray-300 text-lg leading-relaxed mb-8">
-        Aunque mi fuerte ha sido el backend (PHP/MySQL), actualmente estoy expandiendo mis horizontes hacia el ecosistema moderno de JavaScript (React, Astro) y el diseño 3D. Me apasiona crear herramientas que la gente realmente disfrute usar.
+        Mas alla de mi profesión, amo pasar tiempo con mi familia, mis amigos, hacer turismo aventura y jugar videojuegos, considero que todo momento es bueno para compartirlo con alguien, aunque tambien disfruto estar a solas y escuchar musica, leer o simplemente mirar reels!
       </p>
 
-      <div>
-        <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="space-y-6">
+        <h3 class="text-white font-semibold flex items-center gap-2 text-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
           </svg>
-          Tecnologías que uso:
+          Stack Tecnológico:
         </h3>
-        <div class="flex flex-wrap gap-3">
-          {skills.map((skill) => (
-            <span class="px-4 py-2 bg-slate-800 text-blue-300 rounded-lg text-sm font-medium border border-slate-700 hover:border-blue-500 transition-colors cursor-default">
-              {skill}
-            </span>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {skillCategories.map((category) => (
+            <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 hover:border-blue-500/30 transition-colors">
+              <h4 class="text-blue-400 font-bold text-sm mb-3 uppercase tracking-wider">{category.title}</h4>
+              <div class="flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <span class="px-2 py-1 bg-slate-800 text-gray-300 rounded text-xs font-medium border border-slate-700 cursor-default hover:text-white hover:border-blue-500 transition-colors">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </div>
 
     <div class="about-img opacity-0 md:w-1/2 flex justify-center">
-      <div class="relative w-64 h-64 md:w-80 md:h-80">
-        <div class="absolute inset-0 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full blur-2xl opacity-50 animate-pulse"></div>
-        <div class="relative w-full h-full bg-slate-800 rounded-2xl border border-slate-700 flex items-center justify-center overflow-hidden rotate-3 hover:rotate-0 transition-transform duration-500">
-            <span class="text-6xl">👨‍💻</span>
+      <div class="relative w-72 h-72 md:w-96 md:h-96">
+      
+        <div class="absolute inset-0 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-2xl blur-2xl opacity-40 animate-pulse"></div>
+        
+        <div class="relative w-full h-full bg-slate-800 rounded-2xl border-2 border-slate-700 overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500 group">
+            
+            {images.map((img, index) => (
+              <img 
+                src={img} 
+                alt={`Alejo Tarrio foto ${index + 1}`} 
+                class={`carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+              />
+            ))}
+
+            <div class="absolute inset-0 bg-blue-900/10 mix-blend-overlay"></div>
         </div>
       </div>
     </div>
 
   </div>
+  <br><br><br><br><br><br>
 </section>
 
 <script>
@@ -55,28 +104,46 @@ const skills = [
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
-
-  // Animación del Texto (Entra desde la izquierda)
+  
   gsap.fromTo(".about-text",
-    { x: -100, opacity: 0 }, // Empieza a la izquierda e invisible
+    { x: -50, opacity: 0 },
     {
       x: 0, opacity: 1, duration: 1, ease: "power3.out",
       scrollTrigger: {
         trigger: "#sobre-mi",
-        start: "top 60%", // Empieza cuando el top de la sección está al 60% de la pantalla
+        start: "top 70%",
       }
     }
   );
 
-  // Animación de la Imagen (Entra desde la derecha)
   gsap.fromTo(".about-img",
-    { x: 100, opacity: 0 }, // Empieza a la derecha e invisible
+    { x: 50, opacity: 0 },
     {
-      x: 0, opacity: 1, duration: 6, ease: "power3.out",
+      x: 0, opacity: 1, duration: 1, ease: "power3.out", // Bajé la duración de 6 a 1, 6 seg es eterno
       scrollTrigger: {
         trigger: "#sobre-mi",
-        start: "top 60%",
+        start: "top 70%",
       }
     }
   );
+
+  // --- Lógica del Carrusel Automático ---
+  const images = document.querySelectorAll('.carousel-img');
+  let currentIndex = 0;
+  const intervalTime = 3500; // 3.5 segundos por foto
+
+  if (images.length > 0) {
+    setInterval(() => {
+      // Imagen actual: fade out
+      images[currentIndex].classList.remove('opacity-100');
+      images[currentIndex].classList.add('opacity-0');
+
+      // Calcular siguiente índice
+      currentIndex = (currentIndex + 1) % images.length;
+
+      // Siguiente imagen: fade in
+      images[currentIndex].classList.remove('opacity-0');
+      images[currentIndex].classList.add('opacity-100');
+    }, intervalTime);
+  }
 </script>

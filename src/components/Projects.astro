@@ -3,43 +3,71 @@ import ProjectCard from './ProjectCard.astro';
 
 const PROJECTS = [
   {
-    title: "Luz & Arcanos",
-    description: "Plataforma web interactiva para servicios de Tarot. Incluye sistema de reservas y blog. Desarrollada con enfoque en UX y performance.",
-    tags: ["React", "Firebase", "Tailwind CSS", "Git"],
-    link: "https://github.com/AleFaw/AlejoTarrio-React-88090" // Tu repo real
+    title: "PixelForge Lab (En proceso)",
+    description: "Emprendimiento propio de impresión 3D y diseño. E-commerce para venta de figuras de D&D, Pokémon y assets personalizados.",
+    tags: ["Astro", "React", "Blender", "3D Printing"],
+    image: "/proyectos/pixelforge-lab.png", 
+    link: "https://pixelforge-lab.vercel.app/" 
   },
   {
-    title: "Sistema de Gestión Académica",
-    description: "Aplicación Full Stack para administración de escuelas. Gestión de alumnos, asistencias y reportes automatizados. Migración de PHP puro a arquitectura MVC.",
-    tags: ["PHP", "MySQL", "JavaScript", "MVC"],
+    title: "Avedis Gases Industriales",
+    description: "Sitio web de contacto y comercial para la empresa Avedis.",
+    tags: ["Wordpress", "HTML", "CSS", "Bootstrap"],
+    image: "/proyectos/avedis.png", 
+    link: "https://avedis.com.ar/"
+  },
+  {
+    title: "Loft Sillones (En proceso)",
+    description: "Sitio web dedicado a la muestra y venta de sillones para el hogar.",
+    tags: ["HTML", "CSS", "UX/UI"],
+    image: "/proyectos/loft-sillones.png", 
+    link: "https://loftsillones.vercel.app/"
+  },
+  {
+    title: "Grand Fantasia Fragments",
+    description: "Pagina web dedicada al logeo y registro de cuentas para un servidor privado del juego Grand Fantasia.",
+    tags: ["HTML", "CSS", "Base de datos"],
+    image: "/proyectos/grand-fantasia.png", 
+    link: "https://gfprueba.vercel.app/"
+  },
+  {
+    title: "Servimatic Automatización",
+    description: "Sistema de gestión y administración de stock, movimientos, capital y clientes totalmente personalizado.",
+    tags: ["HTML", "CSS", "SQL", "Reportes"],
+    image: "/proyectos/servimatic.png",
     link: "#"
   },
   {
-    title: "Automatización Industrial (TP)",
-    description: "Diseño y presupuesto de sistema neumático para manufactura. Aplicación de lógica de ingeniería en resolución de problemas reales.",
-    tags: ["Ingeniería", "Automatización", "Gestión"],
-    link: "#"
+    title: "Modelado 3D & Rigging",
+    description: "Creación de personajes y assets optimizados para web y videojuegos. Rigging, texturizado y animación.",
+    tags: ["Blender", "3D", "Sketchfab"],
+    video: "/proyectos/diorama.mp4", // <--- TU VIDEO .MP4 AQUÍ (En carpeta public)
+    link: "https://sketchfab.com/3d-models/tp2tarrioalejo-14e261545ce747c098aa8ea2eb5fa29a" // <--- TU LINK A SKETCHFAB
   }
 ];
 ---
 
-<section id="proyectos" class="py-20 px-4">
-  <div class="max-w-6xl mx-auto">
+<section id="proyectos" class="py-20 px-4 bg-slate-950">
+  <div class="max-w-7xl mx-auto">
     
-    <h2 class="text-4xl font-bold text-white mb-12 text-center">
-      Mis <span class="text-blue-500">Proyectos</span>
-    </h2>
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-white mb-4">
+        Mis <span class="text-blue-500">Proyectos</span>
+      </h2>
+      <p class="text-slate-400 max-w-2xl mx-auto">
+        Una selección de desarrollos web, sistemas de gestión y trabajos de ingeniería donde combino lógica y creatividad.
+      </p>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {PROJECTS.map((project) => (
-        /* 1. Envolvemos la tarjeta en un div con la clase 'project-card'.
-           2. Le ponemos 'opacity-0' para que empiece invisible (si no, parpadea).
-        */
         <div class="project-card opacity-0"> 
             <ProjectCard 
               title={project.title}
               description={project.description}
               tags={project.tags}
+              image={project.image}
+              video={project.video} /* <--- IMPORTANTE: Agregar esta línea */
               link={project.link}
             />
         </div>
@@ -52,30 +80,13 @@ const PROJECTS = [
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  // 1. Registramos el plugin para que GSAP sepa que existe
   gsap.registerPlugin(ScrollTrigger);
-
-  // 2. Seleccionamos todas las tarjetas
   const cards = document.querySelectorAll(".project-card");
-
-  // 3. Creamos la animación
   gsap.fromTo(cards, 
-    { 
-      y: 100, // Empiezan 100px más abajo
-      opacity: 0 // Invisibles
-    },
+    { y: 50, opacity: 0 },
     {
-      y: 0, // Terminan en su lugar original
-      opacity: 1, // Visibles
-      duration: 1,
-      ease: "power3.out",
-      stagger: 0.8, // <--- IMPORTANTE: Espera 0.2s entre cada tarjeta
-      scrollTrigger: {
-        trigger: "#proyectos", // La animación se dispara al ver esta sección
-        start: "top 80%", // Inicia cuando el tope de la sección llega al 80% de la pantalla
-        // markers: true, // (Descomenta esto si quieres ver líneas guías para depurar)
-      }
+      y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.2,
+      scrollTrigger: { trigger: "#proyectos", start: "top 75%" }
     }
   );
 </script>

@@ -1,23 +1,21 @@
 ---
-// Definimos las secciones de tu web en orden
 const sections = [
   { id: "#hero", label: "Inicio" },     // Asegúrate de ponerle id="hero" a tu Hero3D
   { id: "#sobre-mi", label: "Sobre Mí" },
-  { id: "#educacion", label: "Formación" },
+  { id: "#formacion", label: "Formación" },
+  { id: "#experiencia", label: "Experiencia" },
   { id: "#proyectos", label: "Proyectos" }
 ];
 ---
 
 <div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4 hidden md:flex">
   
-  {/* Botón SUBIR TODO (Ir al inicio) */}
   <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" 
     class="p-2 bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-full text-gray-400 hover:text-white hover:bg-blue-600 transition-all hover:scale-110 mb-2"
     title="Ir al inicio">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
   </button>
 
-  {/* Puntos de navegación entre secciones */}
   {sections.map((section) => (
     <a href={section.id} 
        class="w-3 h-3 rounded-full bg-slate-600 hover:bg-blue-500 hover:scale-150 transition-all shadow-lg ring-1 ring-slate-900/50"
@@ -25,7 +23,6 @@ const sections = [
     ></a>
   ))}
 
-  {/* Botón BAJAR (Siguiente sección lógica - simple script) */}
   <button id="btn-next" class="p-2 bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-full text-gray-400 hover:text-white hover:bg-blue-600 transition-all hover:scale-110 mt-2" title="Siguiente">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
   </button>
@@ -33,7 +30,6 @@ const sections = [
 </div>
 
 <script>
-  // Lógica simple para el botón de "Bajar"
   document.getElementById('btn-next')?.addEventListener('click', () => {
     // Baja una altura de pantalla completa
     window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });

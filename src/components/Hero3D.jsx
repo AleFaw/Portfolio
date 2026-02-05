@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, useAnimations, Environment, Float, Html } from '@react-three/drei';
+import { useGLTF, useAnimations, Environment, Float, Html, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 
-// --- COMPONENTE DEL AVATAR ---
-function AvatarModel({ mouseGlobal, interaction, playAnimation, isMobile }) {
+function AvatarModel({ mouseGlobal, interaction, playAnimation, isMobile, speech }) {
     const group = useRef();
 
     const { scene, animations: avatarAnims } = useGLTF('/avatar.glb');
@@ -43,7 +42,7 @@ function AvatarModel({ mouseGlobal, interaction, playAnimation, isMobile }) {
                 targetX = 0;
                 targetY = 0;
             } else {
-                const rotationFactor = isMobile ? 0.5 : 1;
+                const rotationFactor = isMobile ? 0.3 : 0.8;
 
                 if (interaction === 'btn-recorrido') {
                     targetX = 0.2;
@@ -62,21 +61,26 @@ function AvatarModel({ mouseGlobal, interaction, playAnimation, isMobile }) {
         }
     });
 
-    // --- CORRECCIÓN DE TAMAÑO (EL PUNTO MEDIO) ---
-    // Escala Móvil: 2.2 (Antes 1.8 era muy chico, 2.5 muy grande)
-    // Posición Móvil: -3.0 (Para centrarlo verticalmente con la nueva escala)
-    const currentScale = isMobile ? 2.2 : 3.3;
-    const currentPos = isMobile ? [0, -3.0, 0] : [0, -4.3, 0];
+    const currentScale = isMobile ? 2.1 : 1.6;
+    const currentPos = isMobile ? [0, -2.3, 0] : [0, -1.7, 0];
+
+    const bubblePos = isMobile ? [0.7, 1.6, 0] : [0.8, 1.3, 0];
 
     return (
         <group ref={group} dispose={null}>
             <primitive object={scene} position={currentPos} scale={currentScale} />
+            
+            <Html position={bubblePos} center zIndexRange={[100, 0]}>
+                <div className={`pointer-events-none bg-white/95 backdrop-blur-sm text-slate-900 px-3 py-2 rounded-xl rounded-bl-none shadow-lg font-bold text-xs md:text-sm w-28 md:w-40 text-center border-2 border-blue-500 transition-all duration-300 ${isMobile ? 'mt-2' : ''}`}>
+                    {speech}
+                </div>
+            </Html>
         </group>
     );
 }
 
 export default function Hero3D() {
-    const [speech, setSpeech] = useState("¡Hola! Soy tu guía. ¿Listo para empezar? 👋");
+    const [speech, setSpeech] = useState("¡Hola! Soy tu guía. 👋");
     const [interaction, setInteraction] = useState(null);
     const [playAnimation, setPlayAnimation] = useState(null);
     const [isMobile, setIsMobile] = useState(false);
@@ -132,24 +136,22 @@ export default function Hero3D() {
     };
 
     const handleHoverRecorrido = () => { if (!playAnimation) { setInteraction('btn-recorrido'); setSpeech("¿Quieres conocer mi historia?"); }};
-    const handleHoverCV = () => { if (!playAnimation) { setInteraction('btn-cv'); setSpeech("Formato PDF listo para llevar 💼"); }};
-    const handleLeave = () => { if (!playAnimation) { setInteraction(null); setSpeech("¡Hola! Soy tu guía. ¿Listo para empezar? 👋"); }};
+    const handleHoverCV = () => { if (!playAnimation) { setInteraction('btn-cv'); setSpeech("Formato PDF listo 💼"); }};
+    const handleLeave = () => { if (!playAnimation) { setInteraction(null); setSpeech("¡Hola! Soy tu guía. 👋"); }};
 
     return (
         <section id="hero" className="h-[100dvh] w-full bg-slate-900 flex items-center justify-center p-4 overflow-hidden relative">
             <div className="w-full h-full max-w-7xl grid grid-cols-1 grid-rows-[45%_55%] md:grid-rows-1 md:grid-cols-2 gap-2 md:gap-8 items-center">
 
-                {/* --- ZONA 1: AVATAR --- */}
                 <div className="relative w-full h-full flex items-center justify-center order-1">
-                    <div className="relative w-full h-full md:h-[600px] rounded-3xl overflow-hidden border border-slate-700 bg-slate-800/50 shadow-2xl shadow-blue-500/10 backdrop-blur-sm">
+                    <div className="relative w-full h-full md:h-[500px] rounded-3xl overflow-hidden border border-slate-700 bg-slate-800/50 shadow-2xl shadow-blue-500/10 backdrop-blur-sm">
                         <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-purple-500/5 z-0"></div>
 
-                        {/* FOV: 50 es un buen balance entre "zoom" y "espacio" */}
-                        <Canvas camera={{ position: [0, 0, 5], fov: isMobile ? 50 : 40 }}>
-                            <ambientLight intensity={0.7} />
-                            <spotLight position={[5, 5, 5]} intensity={2} color="#60a5fa" />
-                            <spotLight position={[-5, 5, 5]} intensity={2} color="#c084fc" />
-                            <Environment preset="city" />
+                        <Canvas shadows camera={{ position: [0, 0, 5], fov: isMobile ? 50 : 40 }}>
+                            <ambientLight intensity={0.5} />
+                            <spotLight position={[3, 5, 5]} angle={0.5} penumbra={1} intensity={2.5} color="#ffffff" castShadow />
+                            <spotLight position={[-5, 5, -5]} intensity={4} color="#a855f7" />
+                            <Environment preset="city" environmentIntensity={0.5} />
 
                             <Float speed={2} rotationIntensity={0.1} floatIntensity={0.5}>
                                 <AvatarModel
@@ -157,43 +159,34 @@ export default function Hero3D() {
                                     interaction={interaction}
                                     playAnimation={playAnimation}
                                     isMobile={isMobile}
+                                    speech={speech}
                                 />
-
-                                {/* Globo un poquito más arriba para que no tape la cara */}
-                                <Html position={isMobile ? [0, 2.0, 0] : [1.2, 1, 0]} center>
-                                    <div className="bg-white text-slate-900 px-3 py-1 md:px-4 md:py-2 rounded-xl rounded-b-none md:rounded-bl-none shadow-lg font-bold text-xs md:text-sm w-32 md:w-48 text-center border-2 border-blue-500 transform transition-all duration-300 animate-bounce">
-                                        {speech}
-                                    </div>
-                                </Html>
                             </Float>
+
+                            <ContactShadows opacity={0.5} scale={10} blur={2} far={4.5} resolution={256} color="#000000" />
                         </Canvas>
                     </div>
                 </div>
 
-                {/* --- ZONA 2: TEXTO --- */}
-                <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2 md:space-y-6 z-10 order-2 h-full justify-start md:justify-center pt-2 md:pt-0">
-
+                <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2 md:space-y-6 z-10 order-2 h-full justify-start md:justify-center pt-4 md:pt-0">
                     <h2 className="text-blue-400 font-bold tracking-wider uppercase text-[10px] md:text-sm">
                         Ingeniero Mecatrónico & Full Stack Dev
                     </h2>
-
                     <h1 className="text-3xl md:text-7xl font-black text-white leading-tight">
                         HOLA, SOY <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
                             ALEJO TARRIO
                         </span>
                     </h1>
-
                     <p className="text-gray-300 text-xs md:text-xl max-w-lg leading-relaxed px-2 md:px-0">
-                        Más que escribir líneas de código, me gusta <strong>dar vida a las ideas</strong>. <br className="hidden md:block"/>
-                        <span className="hidden sm:inline"> Veo la tecnología como un taller infinito donde puedo mezclar lógica y creatividad para construir cosas que la gente disfrute usar.</span>
+                        Apasionado por <strong>mi familia, mis amigos y la programación</strong>. <br className="hidden md:block"/>
+                        <span className="hidden sm:inline"> La tecnología para mi es como un taller, mezclo cosas que voy aprendiendo y creo experiencias comodas y funcionales que la gente disfrute usar.</span>
                     </p>
 
                     <div className="flex flex-wrap gap-2 md:gap-4 pt-2 md:pt-4 justify-center md:justify-start w-full">
                         <a href="#sobre-mi" onClick={handleStartJourney} onMouseEnter={handleHoverRecorrido} onMouseLeave={handleLeave} className="px-6 py-2 md:px-8 md:py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs md:text-base transition-all shadow-lg hover:shadow-blue-500/50 hover:-translate-y-1 active:scale-95">
                             Comenzar Recorrido
                         </a>
-
                         <a href="/Tarrio-Alejo-CV.pdf" onClick={handleDownloadCV} onMouseEnter={handleHoverCV} onMouseLeave={handleLeave} className="px-6 py-2 md:px-8 md:py-3 bg-transparent border border-slate-600 text-white font-bold rounded-lg text-xs md:text-base hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95">
                             Descargar CV
                         </a>

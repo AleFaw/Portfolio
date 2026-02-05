@@ -1,0 +1,74 @@
+---
+const jobs = [
+  {
+    role: "Analista Programador",
+    company: "Avedis Gases Argentinos",
+    date: "Abril 2024 - Actualidad",
+    description: "Desarrollo aplicaciones web dinámicas con PHP y MySQL, optimizando consultas y lógica de negocio para reducir tiempos de carga. Implementé un sistema integral de trazabilidad industrial y herramientas de gestión para áreas clave (Laboratorio, Facturación), mejorando la productividad interna y la experiencia de usuario.",
+    icon: "🏭"
+  },
+  {
+    role: "Desarrollador Full Stack .NET",
+    company: "Quipu Development",
+    date: "Febrero 2023 - Febrero 2024",
+    description: "Desarrollo y mantenimiento de aplicaciones web utilizando .NET Core (C#) y SQL Server. Me encargué de diseñar interfaces de usuario (Front-end), optimizar procedimientos almacenados y generar reportes complejos con Crystal Reports, asegurando la integridad de los datos en todo el ciclo de desarrollo.",
+    icon: "💻"
+  },
+  {
+    role: "Profesor de Programación y Electrónica",
+    company: "Universidad Nacional Guillermo Brown (UNAB)",
+    date: "Agosto 2022 - Octubre 2023",
+    description: "Impartí cursos técnicos de 'Introducción a la Electrónica', 'Arduino' y 'C# para Videojuegos'. Adicionalmente lideré grupos de estudiantes en un voluntariado en la UNLZ sobre programación en lenguaje C, fomentando siempre el pensamiento lógico y la resolución de problemas.",
+    icon: "👨‍🏫"
+  },
+  {
+    role: "Proyectista CAD",
+    company: "Patricelli’s",
+    date: "Febrero 2022 - Abril 2023",
+    description: "Trabajé en colaboración con ingeniería industrial para el desarrollo, control y relevamiento de planos técnicos. Me especialicé en el diseño de antenas de comunicación y estructuras para grandes operadoras como Movistar y Personal.",
+    icon: "📐" // Icono de diseño técnico/CAD
+  }
+];
+---
+
+<section id="experiencia" class="py-20 px-4 bg-slate-900 overflow-hidden">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-4xl font-bold text-white mb-12 text-center">
+      Mi <span class="text-blue-500">Experiencia Laboral</span>
+    </h2>
+
+    <div class="relative border-l-4 border-blue-500/30 ml-6 md:ml-12 space-y-12">
+      {jobs.map((job, index) => (
+        <div class="relative pl-8 md:pl-12 group">
+          
+          <div class={`absolute -left-[14px] top-0 w-6 h-6 rounded-full border-4 border-slate-900 transition-transform duration-300 group-hover:scale-125 ${
+            index === 0 
+              ? 'bg-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.6)]' 
+              : 'bg-blue-600'
+          }`}></div>
+          
+          <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300 hover:bg-slate-800 hover:-translate-y-1 shadow-lg group-hover:shadow-blue-900/20">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2">
+              <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                <span class="text-2xl bg-slate-700/50 p-2 rounded-lg">{job.icon}</span> 
+                {job.role}
+              </h3>
+              <span class={`text-sm font-mono px-3 py-1 rounded-full w-fit ${
+                index === 0 
+                  ? 'text-blue-200 bg-blue-500/20 border border-blue-500/30' 
+                  : 'text-slate-400 bg-slate-700/30'
+              }`}>
+                {job.date}
+              </span>
+            </div>
+            
+            <h4 class="text-lg text-blue-400 font-medium mb-3">{job.company}</h4>
+            <p class="text-gray-300 text-sm leading-relaxed text-pretty">
+              {job.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
